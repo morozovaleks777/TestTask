@@ -2,6 +2,7 @@ package com.example.testtaskforbootcamp.presentation
 
 
 import android.app.Application
+import androidx.compose.ui.tooling.preview.R
 
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.testtaskforbootcamp.data.WordListMapper
 import com.example.testtaskforbootcamp.data.network.WordApi
 import com.example.testtaskforbootcamp.domain.*
+import com.example.testtaskforintellias.data.network.Retrofit.Companion.isWrongWord
 
 
 import com.example.testtaskforintellias.data.network.WordResponse
@@ -26,11 +28,11 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     private val mapper: WordListMapper,
-    private val wordApi: WordApi,
-    private val wordRepository: WordListRepository,
+   // private val wordApi:WordApi,
+    private val wordRepository: com.example.testtaskforintellias.data.network.Retrofit,
     private val addWordItemUseCase: AddWordItemUseCase,
     private val getWordItemUseCase: GetWordItemUseCase,
-    getWordListCase: GetWordListUseCase,
+   val  getWordListCase: GetWordListUseCase,
 ) : AndroidViewModel(application) {
 
 val isConect= MutableStateFlow(true)
@@ -52,14 +54,13 @@ val isWrongWord=MutableStateFlow(true)
 
 
     init {
-        fetchWord("stop")
+        fetchWord("Hello")
 
     }
 
     fun fetchWord(word: String) {
-
-        isConect.value
-//        isWrongWord.value=Retrofit.isWrongWord
+        isConect.value=com.example.testtaskforintellias.data.network.Retrofit.isNoConnection
+       isWrongWord.value=com.example.testtaskforintellias.data.network.Retrofit.isWrongWord
         val parseWord = parseInputName(word)
         val wordValid = validateInput(parseWord)
         if (wordValid) {
@@ -67,8 +68,8 @@ val isWrongWord=MutableStateFlow(true)
             viewModelScope.launch(Dispatchers.IO) {
 
                 if (list.isEmpty() || !list.contains(word.lowercase(Locale.getDefault()))) {
-               val  wordResponseList= wordApi.getWord(word)
-               val   wordResponse=wordResponseList[0]
+               val  wordResponseList=  wordRepository.getWord(word)
+               val   wordResponse=wordResponseList
 
 if(wordResponse is WordResponse.WordResponseItem){
                     val wordItem = mapper.mapWordResponseToWordItem1(wordResponse )
@@ -92,10 +93,11 @@ if(wordResponse is WordResponse.WordResponseItem){
                         }
                     }}}
 
-                else if (list.contains(word.lowercase(Locale.getDefault()))) {
+                else  {
         val dbWord = getWordItemUseCase.getWordItem(word.lowercase(Locale.getDefault()))
 
         wordDBLiveData.value=dbWord
+
     }
 
                 }

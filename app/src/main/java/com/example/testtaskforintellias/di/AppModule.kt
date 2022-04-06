@@ -39,17 +39,17 @@ class AppModule {
             .build()
 
 
-    @Provides
-    @Singleton
-    fun provideWordApi(): WordApi {
-        return Retrofit.Builder()
-            .addConverterFactory(GsonConverterFactory.create())
-            .baseUrl("https://api.dictionaryapi.dev/api/v2/entries/en/")
-
-            .build().create(WordApi::class.java)
-
-
-    }
+ //   @Provides
+//    @Singleton
+//    fun provideWordApi(): WordApi {
+//        return Retrofit.Builder()
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .baseUrl("https://api.dictionaryapi.dev/api/v2/entries/en/")
+//
+//            .build().create(WordApi::class.java)
+//
+//
+//    }
 
     @Singleton
     @Provides

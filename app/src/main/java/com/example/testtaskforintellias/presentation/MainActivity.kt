@@ -26,9 +26,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.testtaskforbootcamp.domain.WordItem
 import com.example.testtaskforbootcamp.presentation.MainViewModel
 import com.example.testtaskforintellias.R
 import com.example.testtaskforintellias.components.InputField
+import com.example.testtaskforintellias.data.network.WordResponse
 import com.example.testtaskforintellias.ui.theme.TestTaskForIntelliasTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -312,48 +314,61 @@ private fun CreateInfo(tfState : MutableState<Boolean>,message: MutableState<Str
 private fun //ColumnScope.
         OurText(viewModel: MainViewModel) {
 
-    val data = viewModel.wordLiveData.collectAsState().value
+    val dataResponse = viewModel.wordLiveData.collectAsState().value
+    val data = viewModel.wordDBLiveData.collectAsState().value ?: dataResponse
     Log.d("test", "OurText: $data")
-val definition= mutableListOf<String>()
-    data?.meanings?.indices?.forEach { i ->
-for(element in data.meanings[i].definitions)
-        definition.add(element.definition)
-    }
+    val definition = mutableListOf<String>()
+    when(data){
+     data  as  WordItem? -> data?.meanings
 
-        Column(
-            modifier = Modifier.padding(5.dp)
-
-        ) {
-
-            Text(
-                modifier = Modifier
-                    .padding(5.dp)
-                    .verticalScroll(rememberScrollState()),
-                text = "word : ${data?.word}",
-                style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.primaryVariant,
-                textAlign = TextAlign.Start,
-
-            )
-            Text(
-                modifier = Modifier
-                    .padding(5.dp)
-                    .verticalScroll(rememberScrollState()),
-                text = "phonetics : ${data?.phonetics?.get(0)?.text}",
-                style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.primaryVariant
-            )
-            Text(
-                modifier = Modifier
-                    .padding(5.dp)
-                    .verticalScroll(rememberScrollState()),
-              //  text = "definition : ${data?.meanings get(0)?.definitions?.indices?.map { data?.meanings. }}",
-                text = "definition : ${definition}}",
-                style = MaterialTheme.typography.h5,
-                color = MaterialTheme.colors.primaryVariant
-            )
+        data as   WordResponse.WordResponseItem -> dataResponse?.meanings?.indices?.forEach { i ->
+            for (element in dataResponse.meanings[i].definitions)
+                definition.add(element.definition)
         }
+        else -> Exception()
+
     }
+    dataResponse?.meanings?.indices?.forEach { i ->
+        for (element in dataResponse.meanings[i].definitions)
+            definition.add(element.definition)
+    }
+
+
+    Column(
+        modifier = Modifier.padding(5.dp)
+
+    ) {
+
+        Text(
+            modifier = Modifier
+                .padding(5.dp)
+                .verticalScroll(rememberScrollState()),
+            text = "word : ${data?.word}",
+            style = MaterialTheme.typography.h5,
+            color = MaterialTheme.colors.primaryVariant,
+            textAlign = TextAlign.Start,
+
+            )
+        Text(
+            modifier = Modifier
+                .padding(5.dp)
+                .verticalScroll(rememberScrollState()),
+            text =if(data is  WordResponse.WordResponseItem ) {"phonetics : ${data?.phonetics?.get(0)?.text}"}
+            else if(data is WordItem){"phonetics : ${data?.phonetic} " } else "",
+            style = MaterialTheme.typography.h5,
+            color = MaterialTheme.colors.primaryVariant
+        )
+        Text(
+            modifier = Modifier
+                .padding(5.dp)
+                .verticalScroll(rememberScrollState()),
+            //  text = "definition : ${data?.meanings get(0)?.definitions?.indices?.map { data?.meanings. }}",
+            text = "definition : ${definition}}",
+            style = MaterialTheme.typography.h5,
+            color = MaterialTheme.colors.primaryVariant
+        )
+    }
+}
 
 
 
