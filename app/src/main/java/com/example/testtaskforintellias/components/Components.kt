@@ -30,7 +30,7 @@ fun InputField(
     enabled:Boolean,
     isSingleLine:Boolean,
     keyboardType: KeyboardType = KeyboardType.Text,
-    imeAction: ImeAction = ImeAction.Next,
+    imeAction: ImeAction = ImeAction.Done,
     onAction: KeyboardActions = KeyboardActions.Default,
 
 
@@ -40,7 +40,7 @@ fun InputField(
         onValueChange = {valueState.value=it},
         label={Text(text = labelId)},
         leadingIcon={ Icon(imageVector = Icons.Rounded.Search,
-            contentDescription = "money icon")
+            contentDescription = " icon")
         },
         singleLine = isSingleLine,
         textStyle = TextStyle(fontSize = 18.sp,
@@ -49,12 +49,8 @@ fun InputField(
             .padding(bottom = 7.dp, start = 7.dp, end = 7.dp)
             .fillMaxWidth(),
         enabled = enabled,
-//        keyboardOptions = KeyboardOptions(keyboardType = keyboardType,
-//            imeAction = imeAction),
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done
-        ),
-       // keyboardActions = onAction,
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType,
+            imeAction = imeAction),
         keyboardActions = KeyboardActions {
            onAction
             keyboardController?.hide()
@@ -67,34 +63,3 @@ fun InputField(
     )
 }
 
-@ExperimentalComposeUiApi
-@Composable
-fun NoteInputText(
-    modifier:Modifier=Modifier,
-    text:String,
-    label:String,
-    maxLine:Int=1,
-    onTextChange:(String)->Unit,
-    onImeAction: ()->Unit={}
-){
-    val keyboardController=LocalSoftwareKeyboardController.current
-    TextField(value = text,
-        onValueChange =onTextChange,
-        colors = TextFieldDefaults.textFieldColors(
-            backgroundColor = Color.Transparent
-        ) ,
-        maxLines=maxLine,
-        label = {Text(text = label)},
-        keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Done
-        ),
-        keyboardActions = KeyboardActions {
-            onImeAction()
-            keyboardController?.hide()
-        },
-        modifier = modifier
-
-    )
-
-
-}

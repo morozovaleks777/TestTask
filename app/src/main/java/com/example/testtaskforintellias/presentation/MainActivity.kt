@@ -27,7 +27,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.testtaskforbootcamp.domain.WordItem
-import com.example.testtaskforbootcamp.presentation.MainViewModel
 import com.example.testtaskforintellias.R
 import com.example.testtaskforintellias.components.InputField
 import com.example.testtaskforintellias.data.network.WordResponse
@@ -35,15 +34,10 @@ import com.example.testtaskforintellias.ui.theme.TestTaskForIntelliasTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
+@ExperimentalComposeUiApi
+@ExperimentalAnimationApi
 class MainActivity : ComponentActivity() {
 
-
-
-
-
-
-    @ExperimentalComposeUiApi
-    @ExperimentalAnimationApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -58,143 +52,6 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
-
-
-
-
-//    @SuppressLint("SetTextI18n")
-//    private fun observeDB() {
-//
-//        viewModel.wordDBLiveData.observe(this, {
-//            word.text = "from database: \n word :  \n ${it.word}"
-//            phonetics.text = "phonetic :    \n ${it.phonetic}"
-//            meanings.text = "meanings :  \n ${it.meanings}"
-//        })
-//    }
-//
-//    @SuppressLint("SetTextI18n")
-//    private fun observeWordResponse() {
-//
-//        viewModel.wordLiveData.observe(this) { response ->
-//
-//            apply {
-//                val wordMeanings = SpannableString(
-//                    "definition :  \n ${response.meanings.indices.map { response.meanings }} \n" +
-//                            "example : \n ${response.meanings[0].definitions[0].example} \n" +
-//                            "synonyms : \n ${response.meanings[0].definitions[0].synonyms}"
-//                )
-//                wordMeanings.setSpan(
-//                    ForegroundColorSpan(
-//                        resources.getColor(
-//                            R.color.purple_200,
-//                            resources.newTheme()
-//                        )
-//                    ),
-//                    0,
-//                    10,
-//                    Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-//                )
-//
-//                val wordText = SpannableString("word :  \n ${response.word}")
-//                wordText.setSpan(
-//                    ForegroundColorSpan(
-//                        resources.getColor(
-//                            R.color.purple_200,
-//                            resources.newTheme()
-//                        )
-//                    ), 0, 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-//                )
-//
-//                val wordPhonetic =
-//                    SpannableString("phonetics :  \n ${response.phonetics[0].text}")
-//                wordPhonetic.setSpan(
-//                    ForegroundColorSpan(
-//                        resources.getColor(
-//                            R.color.purple_200,
-//                            resources.newTheme()
-//                        )
-//                    ), 0, 9, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-//                )
-//
-//                word.text = wordText
-//                phonetics.text = wordPhonetic
-//                meanings.text = wordMeanings
-//
-//
-//
-//            }
-//        }
-//    }
-//
-//    private fun setButtonListener() {
-//        generateButton.setOnClickListener {
-//            wordEnter = enterWord.text.toString()
-//
-//            viewModel.wordList.observe(this, {
-//                itemList = it.filter { wordItem: WordItem -> wordItem.word == wordEnter }
-//            })
-//            viewModel.fetchWord(wordEnter)
-//        }
-//    }
-//
-//
-//
-//    private fun observeViewModel() {
-//
-//        viewModel.errorInputName.observe(vthis) {
-//            val message = if (it) {
-//                getString(R.string.error_input_name)
-//            } else {
-//                null
-//            }
-//            enterWord.error = message
-//
-//        }
-//        viewModel.closeScreen.observe(this) {
-//            this.onBackPressed()
-//        }
-//    }
-//
-//    private fun addTextChangeListeners() {
-//        enterWord.addTextChangedListener(object : TextWatcher {
-//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-//            }
-//
-//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-//                viewModel.resetErrorInputName()
-//            }
-//
-//            override fun afterTextChanged(s: Editable?) {
-//            }
-//        })
-//    }
-//
-//    private fun showToast(){
-//        viewModel.isConect.observe(this,{
-//            if(it){
-//                Toast.makeText(
-//                   this,
-//                    "oh,no no no internet",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//                Retrofit.isNoConnection=false}
-//
-//        })
-//        viewModel.isWrongWord.observe(this,{
-//            if(it){
-//                Toast.makeText(
-//                    this,
-//                    "oh,no no no its wrong word",
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//
-//                Retrofit.isWrongWord=false}
-//        })
-//    }
-
-
-
-
 
 
 }
@@ -241,7 +98,7 @@ private fun CreateCard(
                     color = Color.LightGray,
                     startIndent = 0.dp
                 )
-               CreateInfo(textFieldState,message)
+               CreateInfo(message)
                 Button(onClick = {
                     Log.d("test","button clicked")
                     Log.d("test","button clicked2 ${message.value}")
@@ -288,7 +145,7 @@ private fun CreateImageProfile(modifier: Modifier=Modifier) {
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
-private fun CreateInfo(tfState : MutableState<Boolean>,message: MutableState<String>) {
+private fun CreateInfo(message: MutableState<String>) {
     Column(Modifier.padding(5.dp)) {
         Text(
             text = "explanatory dictionary",
@@ -325,7 +182,7 @@ private fun //ColumnScope.
             for (element in dataResponse.meanings[i].definitions)
                 definition.add(element.definition)
         }
-        else -> Exception()
+       else -> throw Exception("exception : $data")
 
     }
     dataResponse?.meanings?.indices?.forEach { i ->
@@ -353,8 +210,11 @@ private fun //ColumnScope.
             modifier = Modifier
                 .padding(5.dp)
                 .verticalScroll(rememberScrollState()),
-            text =if(data is  WordResponse.WordResponseItem ) {"phonetics : ${data?.phonetics?.get(0)?.text}"}
-            else if(data is WordItem){"phonetics : ${data?.phonetic} " } else "",
+            text = when (data) {
+                is WordResponse.WordResponseItem -> {"phonetics : ${data.phonetics.get(0).text}"}
+                is WordItem -> {"phonetics : ${data.phonetic} " }
+                else -> ""
+            },
             style = MaterialTheme.typography.h5,
             color = MaterialTheme.colors.primaryVariant
         )

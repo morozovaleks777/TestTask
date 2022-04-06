@@ -1,26 +1,22 @@
-package com.example.testtaskforbootcamp.presentation
+package com.example.testtaskforintellias.presentation
 
 
 import android.app.Application
-import androidx.compose.ui.tooling.preview.R
-
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.testtaskforbootcamp.data.WordListMapper
-import com.example.testtaskforbootcamp.data.network.WordApi
-import com.example.testtaskforbootcamp.domain.*
-import com.example.testtaskforintellias.data.network.Retrofit.Companion.isWrongWord
-
-
+import com.example.testtaskforbootcamp.domain.AddWordItemUseCase
+import com.example.testtaskforbootcamp.domain.GetWordItemUseCase
+import com.example.testtaskforbootcamp.domain.GetWordListUseCase
+import com.example.testtaskforbootcamp.domain.WordItem
 import com.example.testtaskforintellias.data.network.WordResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import retrofit2.HttpException
-import retrofit2.Retrofit
 import java.util.*
 import javax.inject.Inject
 
@@ -28,11 +24,10 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(
     application: Application,
     private val mapper: WordListMapper,
-   // private val wordApi:WordApi,
     private val wordRepository: com.example.testtaskforintellias.data.network.Retrofit,
     private val addWordItemUseCase: AddWordItemUseCase,
     private val getWordItemUseCase: GetWordItemUseCase,
-   val  getWordListCase: GetWordListUseCase,
+    getWordListCase: GetWordListUseCase,
 ) : AndroidViewModel(application) {
 
 val isConect= MutableStateFlow(true)
