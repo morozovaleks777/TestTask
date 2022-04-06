@@ -1,6 +1,5 @@
-package com.example.testtaskforbootcamp.data.network
+package com.example.testtaskforintellias.data.network
 
-import com.example.testtaskforintellias.data.network.WordResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 

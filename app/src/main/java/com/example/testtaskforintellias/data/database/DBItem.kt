@@ -1,4 +1,4 @@
-package com.example.testtaskforbootcamp.data.database
+package com.example.testtaskforintellias.data.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

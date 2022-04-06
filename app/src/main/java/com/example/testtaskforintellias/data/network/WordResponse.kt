@@ -1,7 +1,7 @@
 package com.example.testtaskforintellias.data.network
 
 
-import com.example.testtaskforbootcamp.domain.WordItem
+import com.example.testtaskforintellias.domain.WordItem
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
 import javax.inject.Inject

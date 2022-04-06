@@ -2,10 +2,10 @@ package com.example.testtaskforintellias.di
 
 import android.content.Context
 import androidx.room.Room
-import com.example.testtaskforbootcamp.data.database.AppDatabase
-import com.example.testtaskforbootcamp.data.database.WordListRepositoryImpl1
-import com.example.testtaskforbootcamp.data.database.WordResponseListDao
-import com.example.testtaskforbootcamp.domain.WordListRepository
+import com.example.testtaskforintellias.data.database.AppDatabase
+import com.example.testtaskforintellias.data.database.WordListRepositoryImpl1
+import com.example.testtaskforintellias.data.database.WordResponseListDao
+import com.example.testtaskforintellias.domain.WordListRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

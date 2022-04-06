@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -26,7 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.testtaskforbootcamp.domain.WordItem
+import com.example.testtaskforintellias.domain.WordItem
 import com.example.testtaskforintellias.R
 import com.example.testtaskforintellias.components.InputField
 import com.example.testtaskforintellias.data.network.WordResponse
@@ -47,7 +48,7 @@ class MainActivity : ComponentActivity() {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
 
-                         CreateCard()
+                    CreateCard()
                 }
             }
         }
@@ -55,6 +56,7 @@ class MainActivity : ComponentActivity() {
 
 
 }
+
 @ExperimentalComposeUiApi
 @ExperimentalAnimationApi
 @Composable
@@ -62,35 +64,37 @@ private fun CreateCard(
     mainViewModel: MainViewModel = hiltViewModel(),
 ) {
 
-    val message = remember{mutableStateOf("")}
+    val message = remember { mutableStateOf("") }
 
-    val buttonClickedState =  remember {
+    val buttonClickedState = remember {
         mutableStateOf(false)
     }
 
 
-
-
-    val textFieldState= remember {
+    val textFieldState = remember {
         mutableStateOf(false)
     }
-    Surface(modifier = Modifier
-        .fillMaxWidth()
-        .fillMaxHeight()) {
-        Card(modifier = Modifier
-            .width(200.dp)
-            .height(390.dp)
-            .padding(12.dp),
+    Surface(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+    ) {
+        Card(
+            modifier = Modifier
+                .width(200.dp)
+                .height(390.dp)
+                .padding(12.dp),
             shape = RoundedCornerShape(corner = CornerSize(15.dp)),
             backgroundColor = Color.LightGray,
-            elevation = 4.dp) {
+            elevation = 4.dp
+        ) {
             Column(
                 Modifier.size(300.dp),
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-               CreateImageProfile()
+                CreateImageProfile()
                 Divider(
                     //here can be default
                     Modifier.fillMaxWidth(),
@@ -98,23 +102,24 @@ private fun CreateCard(
                     color = Color.LightGray,
                     startIndent = 0.dp
                 )
-               CreateInfo(message)
+                CreateInfo(message)
                 Button(onClick = {
-                    Log.d("test","button clicked")
-                    Log.d("test","button clicked2 ${message.value}")
+                    Log.d("test", "button clicked")
+                    Log.d("test", "button clicked2 ${message.value}")
                     mainViewModel.fetchWord(message.value)
-                    buttonClickedState.value=!buttonClickedState.value
+                    buttonClickedState.value = !buttonClickedState.value
 
                 }
                 ) {
-                    Text(text = "Generate",
-                        style = MaterialTheme.typography.button )
+                    Text(
+                        text = "Generate",
+                        style = MaterialTheme.typography.button
+                    )
                 }
-                OurText(viewModel =mainViewModel)
-//                    AnimatedVisibility(visible = buttonClickedState.value) {
-//                        OurText( message, viewModel =mainViewModel )
-//                    }
 
+                AnimatedVisibility(visible = buttonClickedState.value) {
+                    OurText(viewModel = mainViewModel)
+                }
 
 
             }
@@ -123,7 +128,7 @@ private fun CreateCard(
 }
 
 @Composable
-private fun CreateImageProfile(modifier: Modifier=Modifier) {
+private fun CreateImageProfile(modifier: Modifier = Modifier) {
     Surface(
         modifier = modifier
             .size(150.dp)
@@ -153,13 +158,14 @@ private fun CreateInfo(message: MutableState<String>) {
             color = MaterialTheme.colors.primaryVariant
         )
 
-        InputField(valueState =message ,
+        InputField(
+            valueState = message,
             labelId = "enter word",
             enabled = true,
-            isSingleLine =true )
+            isSingleLine = true
+        )
 
         Text(message.value, fontSize = 28.sp)
-
 
 
     }
@@ -175,14 +181,14 @@ private fun //ColumnScope.
     val data = viewModel.wordDBLiveData.collectAsState().value ?: dataResponse
     Log.d("test", "OurText: $data")
     val definition = mutableListOf<String>()
-    when(data){
-     data  as  WordItem? -> data?.meanings
+    when (data) {
+        data as WordItem? -> data?.meanings
 
-        data as   WordResponse.WordResponseItem -> dataResponse?.meanings?.indices?.forEach { i ->
+        data as WordResponse.WordResponseItem -> dataResponse?.meanings?.indices?.forEach { i ->
             for (element in dataResponse.meanings[i].definitions)
                 definition.add(element.definition)
         }
-       else -> throw Exception("exception : $data")
+        else -> throw Exception("exception : $data")
 
     }
     dataResponse?.meanings?.indices?.forEach { i ->
@@ -211,8 +217,12 @@ private fun //ColumnScope.
                 .padding(5.dp)
                 .verticalScroll(rememberScrollState()),
             text = when (data) {
-                is WordResponse.WordResponseItem -> {"phonetics : ${data.phonetics.get(0).text}"}
-                is WordItem -> {"phonetics : ${data.phonetic} " }
+                is WordResponse.WordResponseItem -> {
+                    "phonetics : ${data.phonetics.get(0).text}"
+                }
+                is WordItem -> {
+                    "phonetics from DB: ${data.phonetic} "
+                }
                 else -> ""
             },
             style = MaterialTheme.typography.h5,
@@ -229,10 +239,6 @@ private fun //ColumnScope.
         )
     }
 }
-
-
-
-
 
 
 @ExperimentalComposeUiApi

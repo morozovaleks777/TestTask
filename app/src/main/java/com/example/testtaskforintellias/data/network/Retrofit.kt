@@ -1,8 +1,5 @@
 package com.example.testtaskforintellias.data.network
 
-import android.app.Application
-import com.example.testtaskforbootcamp.data.network.WordApi
-import dagger.Provides
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.net.ConnectException

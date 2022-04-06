@@ -1,9 +1,9 @@
-package com.example.testtaskforbootcamp.data
+package com.example.testtaskforintellias.data
 
 
-import com.example.testtaskforbootcamp.data.database.DBItem
+import com.example.testtaskforintellias.data.database.DBItem
 import com.example.testtaskforintellias.data.network.WordResponse
-import com.example.testtaskforbootcamp.domain.WordItem
+import com.example.testtaskforintellias.domain.WordItem
 import java.util.*
 import javax.inject.Inject
 

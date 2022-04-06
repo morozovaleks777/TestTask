@@ -1,4 +1,4 @@
-package com.example.testtaskforbootcamp.domain
+package com.example.testtaskforintellias.domain
 
 import androidx.lifecycle.LiveData
 import javax.inject.Inject

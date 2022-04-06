@@ -1,11 +1,11 @@
-package com.example.testtaskforbootcamp.data.database
+package com.example.testtaskforintellias.data.database
 
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
-import com.example.testtaskforbootcamp.data.WordListMapper
-import com.example.testtaskforbootcamp.domain.WordItem
-import com.example.testtaskforbootcamp.domain.WordListRepository
+import com.example.testtaskforintellias.data.WordListMapper
+import com.example.testtaskforintellias.domain.WordItem
+import com.example.testtaskforintellias.domain.WordListRepository
 import javax.inject.Inject
 
 class WordListRepositoryImpl1 @Inject constructor(

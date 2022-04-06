@@ -1,4 +1,4 @@
-package com.example.testtaskforbootcamp.domain
+package com.example.testtaskforintellias.domain
 
 data class WordItem(
     var itemId: Int = UNDEFINED_ID,
