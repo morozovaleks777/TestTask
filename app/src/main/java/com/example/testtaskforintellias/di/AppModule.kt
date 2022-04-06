@@ -5,15 +5,12 @@ import androidx.room.Room
 import com.example.testtaskforbootcamp.data.database.AppDatabase
 import com.example.testtaskforbootcamp.data.database.WordListRepositoryImpl1
 import com.example.testtaskforbootcamp.data.database.WordResponseListDao
-import com.example.testtaskforbootcamp.data.network.WordApi
 import com.example.testtaskforbootcamp.domain.WordListRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
